@@ -1,5 +1,5 @@
-import { AppStore } from "./state/store";
-import { serverPort } from "./config";
+import { AppStore } from "../state/store";
+import { serverPort } from "../config";
 
 const serverUrl = () => `ws://${window.location.hostname}:${serverPort}`
 

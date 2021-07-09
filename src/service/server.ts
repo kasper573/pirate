@@ -1,7 +1,7 @@
 import http from "http";
 import ws from "ws";
 import express from "express"
-import { serverPort } from "./config";
+import { serverPort } from "../config";
 
 const app = express();
 
@@ -20,7 +20,7 @@ wss.on('connection', (ws: WebSocket) => {
     console.log('received: %s', message);
     ws.send(`Hello, you sent -> ${message}`);
   });
-  1
+
   //send immediately a feedback to the incoming connection
   ws.send('Hi there, I am a WebSocket server');
 });
