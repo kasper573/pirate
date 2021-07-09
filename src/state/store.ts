@@ -3,6 +3,7 @@ import { TypedUseSelectorHook, useDispatch as useReduxDispatch, useSelector as u
 import { core } from "./core";
 
 export const store = configureStore({ reducer: core.reducer})
+export type AppStore = typeof store;
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch;
 export const useDispatch = () => useReduxDispatch<AppDispatch>();
