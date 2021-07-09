@@ -5,7 +5,9 @@ const serverUrl = () => `ws://${window.location.hostname}:${serverPort}`
 
 export const createClient = (store: AppStore) => {
   const ws = new WebSocket(serverUrl());
-  ws.onmessage = (e) => {
-    console.log("message", e.data);
+  ws.onmessage = (e) => console.log("message", e.data);
+  ws.onopen = () => {
+    console.log("open")
+    ws.send("message");
   }
 }

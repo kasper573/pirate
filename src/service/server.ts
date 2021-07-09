@@ -3,29 +3,17 @@ import ws from "ws";
 import express from "express"
 import { serverPort } from "../config";
 
-const app = express();
+const httpServer = http.createServer(express());
+const wsServer = new ws.Server({ server: httpServer });
 
-//initialize a simple http server
-const server = http.createServer(app);
+wsServer.on('connection', (ws: WebSocket) => {
+  ws.onmessage = (e) => {
+    console.log('received: %s', e.data);
+    ws.send(`Hello, you sent -> ${e.data}`);
+  }
 
-//initialize the WebSocket server instance
-const wss = new ws.Server({ server: server });
-
-wss.on('connection', (ws: WebSocket) => {
-
-  //connection is up, let's add a simple simple event
-  wss.on('message', (message: string) => {
-
-    //log the received message and send it back to the client
-    console.log('received: %s', message);
-    ws.send(`Hello, you sent -> ${message}`);
-  });
-
-  //send immediately a feedback to the incoming connection
   ws.send('Hi there, I am a WebSocket server');
 });
 
-//start our server
-server.listen(serverPort, () => {
-  console.log(`Server started on port ${serverPort} :)`);
-});
+
+httpServer.listen(serverPort, () => console.log(`Server started on port ${serverPort}`));
