@@ -1,5 +1,13 @@
 import React from "react";
+import { Ocean } from "./Ocean";
+import { Ship } from "./Ship";
+import { globalStyle } from "./globalStyle";
 
 export function App() {
-  return <span>Hello World</span>;
+  globalStyle();
+  return (
+    <Ocean>
+      <Ship />
+    </Ocean>
+  );
 }
