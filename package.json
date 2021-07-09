@@ -10,10 +10,26 @@
     "clean": "rm dist/bundle.js",
     "start": "snowpack dev",
     "build": "snowpack build",
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix"
   },
   "jest": {
     "preset": "ts-jest"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ],
+    "plugins": [
+      "import"
+    ],
+    "rules": {
+      "import/order": [
+        "error"
+      ]
+    }
   },
   "husky": {
     "hooks": {
@@ -22,6 +38,7 @@
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx,json,css,md}": [
+      "eslint --fix",
       "prettier --write",
       "git add"
     ]
@@ -34,6 +51,18 @@
     "@types/jest": "^26.0.24",
     "@types/react": "^17.0.14",
     "@types/react-dom": "^17.0.9",
+    "@typescript-eslint/eslint-plugin": "4.0.0",
+    "@typescript-eslint/parser": "4.0.0",
+    "babel-eslint": "10.0.0",
+    "eslint": "7.5.0",
+    "eslint-config-react-app": "^6.0.0",
+    "eslint-plugin-flowtype": "5.2.0",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-jest": "24.0.0",
+    "eslint-plugin-jsx-a11y": "6.3.1",
+    "eslint-plugin-react": "7.20.3",
+    "eslint-plugin-react-hooks": "4.0.8",
+    "eslint-plugin-testing-library": "3.9.0",
     "husky": "^7.0.1",
     "jest": "^27.0.6",
     "lint-staged": "^11.0.0",
