@@ -11,8 +11,8 @@
     "start": "snowpack dev",
     "build": "snowpack build",
     "test": "jest",
-    "lint": "eslint",
-    "lint:fix": "eslint --fix"
+    "lint": "eslint --ext js,ts,tsx src",
+    "lint:fix": "eslint --ext js,ts,tsx src --fix"
   },
   "jest": {
     "preset": "ts-jest"
