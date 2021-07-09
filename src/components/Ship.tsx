@@ -1,5 +1,5 @@
 import { styled } from "@stitches/react";
-import shipImageUrl from "../assets/ship.png";
+import shipImageUrl from "../assets/ships/ship.png";
 
 export const Ship = styled("div", {
   width: 100,
