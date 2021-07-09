@@ -8,7 +8,7 @@ export function App() {
   globalStyle();
   return (
     <Ocean>
-      <Ship style={createTransformStyle({ x: 500, y: 300, rotation: 0 })} />
+      <Ship style={createTransformStyle({ x: 150, y: 150, rotation: 0 })} />
     </Ocean>
   );
 }
