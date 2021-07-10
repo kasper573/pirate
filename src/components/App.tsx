@@ -10,7 +10,6 @@ import { Ocean } from "./Ocean";
 import { Ship } from "./Ship";
 import { ContentFit } from "./ContentFit";
 import { Projectile } from "./Projectile";
-import { DebugWindow } from "./DebugWindow";
 import { DeathDialog } from "./DeathDialog";
 
 export function App() {
@@ -25,7 +24,7 @@ export function App() {
   );
   const projectiles = useSelector((state) => state.projectiles);
 
-  const { direction } = useShipControls();
+  useShipControls();
 
   return (
     <Viewport
@@ -55,21 +54,6 @@ export function App() {
           );
         })}
         {youAreDead && <DeathDialog />}
-        <DebugWindow>
-          <pre>
-            {JSON.stringify(
-              {
-                clientId,
-                ships: ships.ids.length,
-                projectiles: projectiles.ids.length,
-                direction,
-                viewport: { width, height },
-              },
-              null,
-              2
-            )}
-          </pre>
-        </DebugWindow>
       </Ocean>
     </Viewport>
   );
