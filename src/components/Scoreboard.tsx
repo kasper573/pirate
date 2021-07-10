@@ -14,12 +14,14 @@ export function Scoreboard() {
       <p>Scoreboard</p>
       <ul>
         {orderedIds.map((id) => {
-          const ship = ships.entities[id];
-          const name = id.toString().substr(0, 10);
+          const ship = ships.entities[id]!;
           const score = scores[id] ?? 0;
+          if (!ship.name) {
+            return null;
+          }
           return (
-            <li>
-              {name}: {score}
+            <li key={ship.id}>
+              {ship.name}: {score}
             </li>
           );
         })}

@@ -31,16 +31,25 @@ export const slice = createSlice({
   name: "core",
   initialState,
   reducers: {
-    addShip: (state, { payload: id }: PayloadAction<ShipId>) => {
-      shipAdapter.addOne(state.ships, createShip(id));
+    addShip: (state, { payload }: PayloadAction<ShipDefinition>) => {
+      shipAdapter.addOne(state.ships, payload);
     },
     angleShip: (
       state,
       { payload: { id, angle } }: PayloadAction<{ id: ShipId; angle: number }>
     ) => {
       const ship = state.ships.entities[id];
-      if (ship) {
+      if (ship?.alive) {
         ship.transform.angle = angle;
+      }
+    },
+    nameShip: (
+      state,
+      { payload: { id, name } }: PayloadAction<{ id: ShipId; name: string }>
+    ) => {
+      const ship = state.ships.entities[id];
+      if (ship) {
+        ship.name = name;
       }
     },
     killShip: ({ ships }, { payload: id }: PayloadAction<ShipId>) => {
@@ -50,8 +59,9 @@ export const slice = createSlice({
       }
     },
     playAgain: ({ ships }, { payload: id }: PayloadAction<ShipId>) => {
+      const ship = ships.entities[id]!;
       shipAdapter.removeOne(ships, id);
-      shipAdapter.addOne(ships, createShip(id));
+      shipAdapter.addOne(ships, createShip(id, ship.name ?? ""));
     },
     removeShip: (state, action: PayloadAction<ShipId>) => {
       shipAdapter.removeOne(state.ships, action);
