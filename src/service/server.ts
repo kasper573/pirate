@@ -28,17 +28,17 @@ function distributeDispatch(action: AppAction, targetIds = all()) {
 }
 
 wsServer.on("connection", (ws: WebSocket) => {
-  const id = v4();
-  sockets.set(id, ws);
+  const clientId = v4();
+  sockets.set(clientId, ws);
   ws.onmessage = (e) =>
-    distributeDispatch(parseActionFromSocket(e), others(id));
+    distributeDispatch(parseActionFromSocket(e), others(clientId));
   ws.onclose = () => {
-    sockets.delete(id);
-    distributeDispatch(coreSlice.actions.removeShip(id));
+    sockets.delete(clientId);
+    distributeDispatch(coreSlice.actions.removeShip(clientId));
   };
   dispatchToSocket(ws, coreSlice.actions.setState(store.getState()));
-  dispatchToSocket(ws, coreSlice.actions.setClientId(id));
-  distributeDispatch(coreSlice.actions.addShip(createShip(id)));
+  dispatchToSocket(ws, coreSlice.actions.setClientId(clientId));
+  distributeDispatch(coreSlice.actions.addShip(createShip(clientId)));
 });
 
 httpServer.listen(serverPort, () =>
