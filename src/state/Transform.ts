@@ -1,7 +1,4 @@
-export interface Position {
-  x: number;
-  y: number;
-}
+import { Position } from "./Position";
 
 export interface Transform extends Position {
   angle: number;

@@ -5,6 +5,8 @@ import {
   Update,
 } from "@reduxjs/toolkit";
 import { typedAssign } from "../functions/typedAssign";
+import { oceanSize } from "../config";
+import { keepShipsWithin } from "../functions/keepShipsWithin";
 import { ShipDefinition, ShipId } from "./ShipDefinition";
 
 const shipAdapter = createEntityAdapter<ShipDefinition>({
@@ -27,6 +29,7 @@ export const coreSlice = createSlice({
     },
     updateShip: (state, action: PayloadAction<Update<ShipDefinition>>) => {
       shipAdapter.updateOne(state.ships, action);
+      keepShipsWithin(state.ships, oceanSize);
     },
     removeShip: (state, action: PayloadAction<ShipId>) => {
       shipAdapter.removeOne(state.ships, action);

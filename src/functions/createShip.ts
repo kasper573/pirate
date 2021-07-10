@@ -1,12 +1,12 @@
 import { ShipDefinition, ShipId } from "../state/ShipDefinition";
-import { mapSize } from "../config";
+import { oceanSize } from "../config";
 
 export function createShip(id: ShipId): ShipDefinition {
   return {
     id,
     transform: {
-      x: Math.random() * mapSize.width,
-      y: Math.random() * mapSize.height,
+      x: Math.random() * oceanSize.width,
+      y: Math.random() * oceanSize.height,
       angle: Math.random() * Math.PI * 2,
     },
   };
