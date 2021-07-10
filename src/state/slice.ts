@@ -11,6 +11,7 @@ import {
 import { keepShipsWithin } from "../functions/keepShipsWithin";
 import { expireProjectiles } from "../functions/expireProjectiles";
 import { translate } from "../functions/translate";
+import { hitTest } from "../functions/hitTest";
 import { ShipDefinition, ShipId } from "./ShipDefinition";
 import { shipAdapter } from "./shipAdapter";
 import { projectileAdapter } from "./projectileAdapter";
@@ -73,6 +74,7 @@ export const slice = createSlice({
       const angle = ship.transform.angle + angleOffset;
       projectileAdapter.addOne(state.projectiles, {
         id: v4(),
+        shooterId: ship.id,
         transform: translate(
           { ...ship.transform, ...projectileSize, angle },
           shipSize.width / 2
@@ -81,10 +83,18 @@ export const slice = createSlice({
     },
     nextFrame: ({ ships, projectiles }) => {
       // Move ships
-      for (const id of ships.ids) {
-        const ship = ships.entities[id]!;
-        if (ship.alive) {
-          ship.transform = translate(ship.transform, shipSpeed);
+      const aliveShips = Object.values(ships.entities).filter(
+        (ship): ship is ShipDefinition => !!ship?.alive
+      );
+      for (const ship of aliveShips) {
+        ship.transform = translate(ship.transform, shipSpeed);
+        const crashedInto = aliveShips.find(
+          (other) =>
+            ship.id !== other.id && hitTest(ship.transform, other.transform)
+        );
+        if (crashedInto) {
+          ship.alive = false;
+          crashedInto.alive = false;
         }
       }
       keepShipsWithin(ships, oceanSize);
@@ -93,6 +103,14 @@ export const slice = createSlice({
       for (const id of projectiles.ids) {
         const p = projectiles.entities[id]!;
         p.transform = translate(p.transform, projectileSpeed);
+        const hitShip = aliveShips.find(
+          (ship) =>
+            ship.id !== p.shooterId && hitTest(ship.transform, p.transform)
+        );
+        if (hitShip) {
+          hitShip.alive = false;
+          projectileAdapter.removeOne(projectiles, id);
+        }
       }
 
       expireProjectiles(projectiles, oceanSize);
