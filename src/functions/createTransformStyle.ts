@@ -9,5 +9,5 @@ export const createTransformStyle = ({
   position: "absolute",
   top: 0,
   left: 0,
-  transform: `translate(-50%, -50%) translate(${x}px, ${y}px) rotate(${rotation}deg)`,
+  transform: `translate(-50%, -50%) translate(${x}px, ${y}px) rotate(90deg) rotate(${rotation}rad)`,
 });

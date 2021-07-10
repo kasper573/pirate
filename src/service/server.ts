@@ -7,6 +7,7 @@ import { AppAction, createStore } from "../state/store";
 import { coreSlice } from "../state/coreSlice";
 import { ShipId } from "../state/ShipDefinition";
 import { createShip } from "../functions/createShip";
+import { moveInDirection } from "../functions/moveInDirection";
 import { parseActionFromSocket, dispatchToSocket } from "./socket";
 
 const httpServer = http.createServer(express());
@@ -40,6 +41,27 @@ wsServer.on("connection", (ws: WebSocket) => {
   dispatchToSocket(ws, coreSlice.actions.setClientId(clientId));
   distributeDispatch(coreSlice.actions.addShip(createShip(clientId)));
 });
+
+setInterval(moveShips, 10);
+
+function moveShips() {
+  const { ships } = store.getState();
+  for (const id of ships.ids) {
+    const ship = ships.entities[id]!;
+    distributeDispatch(
+      coreSlice.actions.updateShip({
+        id,
+        changes: {
+          transform: moveInDirection(
+            ship.transform,
+            ship.transform.rotation,
+            1
+          ),
+        },
+      })
+    );
+  }
+}
 
 httpServer.listen(serverPort, () =>
   console.log(`Server started on port ${serverPort}`)
