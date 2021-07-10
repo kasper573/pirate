@@ -23,6 +23,7 @@ const Dialog = styled("div", {
   fontSize: 24,
   padding: 24,
   position: "absolute",
+  color: "white",
   right: 12,
   bottom: 12,
 });
