@@ -33,6 +33,12 @@ export const coreSlice = createSlice({
         ship.transform.angle = angle;
       }
     },
+    killShip: ({ ships }, { payload: id }: PayloadAction<ShipId>) => {
+      const ship = ships.entities[id];
+      if (ship) {
+        ship.alive = false;
+      }
+    },
     removeShip: (state, action: PayloadAction<ShipId>) => {
       shipAdapter.removeOne(state.ships, action);
     },
@@ -66,15 +72,6 @@ export const coreSlice = createSlice({
         transform,
         initialTransform: transform,
       });
-    },
-    setShipAlive: (
-      { ships },
-      { payload: { id, alive } }: PayloadAction<{ id: ShipId; alive: boolean }>
-    ) => {
-      const ship = ships.entities[id];
-      if (ship) {
-        ship.alive = alive;
-      }
     },
     nextFrame: ({ ships, projectiles }) => {
       // Move ships

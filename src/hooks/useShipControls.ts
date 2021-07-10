@@ -11,9 +11,7 @@ export function useShipControls() {
   const direction = useDirection();
   useKeyPressEvent(" ", () => {
     if (myShip) {
-      clientDispatch(
-        coreSlice.actions.setShipAlive({ id: myShip.id, alive: !myShip.alive })
-      );
+      clientDispatch(coreSlice.actions.killShip(myShip.id));
     }
   });
 
