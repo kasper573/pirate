@@ -37,6 +37,11 @@ wsServer.on("connection", (ws: WebSocket) => {
   distributeDispatch(coreSlice.actions.addShip(createShip(clientId)));
 });
 
+setInterval(() => {
+  store.dispatch(coreSlice.actions.nextFrame());
+  distributeDispatch(coreSlice.actions.setState(store.getState()));
+}, 1000 / 60);
+
 httpServer.listen(serverPort, () =>
   console.log(`Server started on port ${serverPort}`)
 );

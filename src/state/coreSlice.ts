@@ -1,11 +1,11 @@
-import { createSlice, PayloadAction, Update } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction} from "@reduxjs/toolkit";
 import { v4 } from "uuid";
 import { typedAssign } from "../functions/typedAssign";
 import { oceanSize } from "../config";
 import { keepShipsWithin } from "../functions/keepShipsWithin";
 import { expireProjectiles } from "../functions/expireProjectiles";
+import { translate } from "../functions/translate";
 import { ShipDefinition, ShipId } from "./ShipDefinition";
-import { ProjectileDefinition } from "./ProjectileDefinition";
 import { shipAdapter } from "./shipAdapter";
 import { projectileAdapter } from "./projectileAdapter";
 
@@ -24,45 +24,64 @@ export const coreSlice = createSlice({
     addShip: (state, action: PayloadAction<ShipDefinition>) => {
       shipAdapter.addOne(state.ships, action);
     },
-    updateShip: (state, action: PayloadAction<Update<ShipDefinition>>) => {
-      shipAdapter.updateOne(state.ships, action);
-      keepShipsWithin(state.ships, oceanSize);
+    angleShip: (
+      state,
+      { payload: { id, angle } }: PayloadAction<{ id: ShipId; angle: number }>
+    ) => {
+      const ship = state.ships.entities[id];
+      if (ship) {
+        ship.transform.angle = angle;
+      }
     },
     removeShip: (state, action: PayloadAction<ShipId>) => {
       shipAdapter.removeOne(state.ships, action);
     },
-    setState: (state, { payload }: PayloadAction<CoreState>) => {
-      typedAssign(state, payload);
+    setState: (
+      state,
+      { payload: { clientId, ...updatedState } }: PayloadAction<CoreState>
+    ) => {
+      typedAssign(state, updatedState);
     },
-    setClientId: (state, { payload }: PayloadAction<ShipId>) => {
-      state.clientId = payload;
+    setClientId: (state, { payload: id }: PayloadAction<ShipId>) => {
+      state.clientId = id;
     },
     fireProjectile: (
       state,
       {
-        payload: { id, angleOffset },
-      }: PayloadAction<{ id: ShipId; angleOffset: number }>
+        payload: { id, angleOffset, startDistance },
+      }: PayloadAction<{
+        id: ShipId;
+        angleOffset: number;
+        startDistance: number;
+      }>
     ) => {
       const ship = state.ships.entities[id];
       if (!ship) {
         return;
       }
-      const transform = {
-        ...ship.transform,
-        angle: ship.transform.angle + angleOffset,
-      };
+      const angle = ship.transform.angle + angleOffset;
+      const transform = translate({ ...ship.transform, angle }, startDistance);
       projectileAdapter.addOne(state.projectiles, {
         id: v4(),
         transform,
         initialTransform: transform,
       });
     },
-    updateProjectile: (
-      state,
-      action: PayloadAction<Update<ProjectileDefinition>>
-    ) => {
-      shipAdapter.updateOne(state.projectiles, action);
-      expireProjectiles(state.projectiles, oceanSize);
+    nextFrame: ({ ships, projectiles }) => {
+      // Move ships
+      for (const id of ships.ids) {
+        const ship = ships.entities[id]!;
+        ship.transform = translate(ship.transform, 3);
+      }
+      keepShipsWithin(ships, oceanSize);
+
+      // Move projectiles
+      for (const id of projectiles.ids) {
+        const p = projectiles.entities[id]!;
+        p.transform = translate(p.transform, 3);
+      }
+
+      expireProjectiles(projectiles, oceanSize);
     },
   },
 });

@@ -2,7 +2,6 @@ import { useKeyPress, useKeyPressEvent } from "react-use";
 import useAnimationFrame from "use-animation-frame";
 import { useClientDispatch } from "../service/client";
 import { useSelector } from "../state/store";
-import { createAngleAction } from "../functions/createAngleAction";
 import { coreSlice } from "../state/coreSlice";
 
 export function useShipControls() {
@@ -15,7 +14,8 @@ export function useShipControls() {
       clientDispatch(
         coreSlice.actions.fireProjectile({
           id: myShip.id,
-          angleOffset: Math.PI / 4,
+          angleOffset: Math.PI / 2,
+          startDistance: 50,
         })
       );
     }
@@ -27,7 +27,12 @@ export function useShipControls() {
         return;
       }
       const newAngle = myShip.transform.angle + direction * Math.PI * delta;
-      clientDispatch(createAngleAction(myShip, newAngle));
+      clientDispatch(
+        coreSlice.actions.angleShip({
+          id: myShip.id,
+          angle: newAngle,
+        })
+      );
     },
     [myShip, direction]
   );

@@ -16,6 +16,7 @@ export function App() {
 
   const oceanRef = useRef<HTMLDivElement>(null);
   const { width = 1, height = 1 } = useWindowSize();
+  const clientId = useSelector((state) => state.clientId);
   const ships = useSelector((state) => state.ships);
   const projectiles = useSelector((state) => state.projectiles);
 
@@ -46,6 +47,7 @@ export function App() {
           <pre>
             {JSON.stringify(
               {
+                clientId,
                 ships: ships.ids.length,
                 projectiles: projectiles.ids.length,
                 direction,
