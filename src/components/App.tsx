@@ -23,7 +23,11 @@ export function App() {
   const { direction } = useShipControls();
 
   return (
-    <Viewport containerSize={{ width, height }} contentSize={oceanSize}>
+    <Viewport
+      containerSize={{ width, height }}
+      contentSize={oceanSize}
+      onContextMenu={(e) => e.preventDefault()}
+    >
       <Ocean style={oceanSize} ref={oceanRef}>
         {ships.ids.map((id) => {
           const ship = ships.entities[id]!;

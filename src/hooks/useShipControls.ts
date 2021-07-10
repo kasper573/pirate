@@ -1,5 +1,6 @@
-import { useKeyPress, useKeyPressEvent } from "react-use";
+import { useKeyPress, useKeyPressEvent, useMouse } from "react-use";
 import useAnimationFrame from "use-animation-frame";
+import { useEffect } from "react";
 import { useClientDispatch } from "../service/client";
 import { useSelector } from "../state/store";
 import { coreSlice } from "../state/coreSlice";
@@ -9,12 +10,12 @@ export function useShipControls() {
   const myShip = useSelector((state) => state.ships.entities[state.clientId]);
   const direction = useDirection();
 
-  useFireCannonEvent(() => {
+  useFireCannonEvent((direction) => {
     if (myShip) {
       clientDispatch(
         coreSlice.actions.fireProjectile({
           id: myShip.id,
-          angleOffset: Math.PI / 2,
+          angleOffset: (direction * Math.PI) / 2,
           startDistance: 50,
         })
       );
@@ -40,13 +41,26 @@ export function useShipControls() {
   return { direction };
 }
 
-const useFireCannonEvent = (fire: () => void) => {
-  useKeyPressEvent(" ", fire);
+const useFireCannonEvent = (fire: (direction: number) => void) => {
+  useEffect(() => {
+    const handleMouseDown = (e: MouseEvent) => {
+      if (e.button === 0) {
+        fire(-1);
+      } else if (e.button === 2) {
+        fire(1);
+      }
+    };
+    document.addEventListener("mousedown", handleMouseDown);
+    return () => document.removeEventListener("mousedown", handleMouseDown);
+  }, [fire]);
+
+  useKeyPressEvent("ArrowLeft", () => fire(-1));
+  useKeyPressEvent("ArrowRight", () => fire(1));
 };
 
 const useDirection = () => {
-  const [isLeftPressed] = useKeyPress("ArrowLeft");
-  const [isRightPressed] = useKeyPress("ArrowRight");
+  const [isLeftPressed] = useKeyPress("a");
+  const [isRightPressed] = useKeyPress("d");
   if (isLeftPressed) {
     return -1;
   }
