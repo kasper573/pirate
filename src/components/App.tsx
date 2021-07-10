@@ -15,6 +15,7 @@ import { Projectile } from "./Projectile";
 import { DeathDialog } from "./DeathDialog";
 import { Scoreboard } from "./Scoreboard";
 import { NameDialog } from "./NameDialog";
+import { Instructions } from "./Instructions";
 
 export function App() {
   globalStyle();
@@ -64,7 +65,7 @@ export function App() {
           );
         })}
         <Scoreboard />
-        {youAreDead && <DeathDialog />}
+        {youAreDead ? <DeathDialog /> : <Instructions />}
       </Ocean>
     </Viewport>
   );

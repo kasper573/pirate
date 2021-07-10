@@ -11,21 +11,19 @@ export function Scoreboard() {
   });
   return (
     <Dialog>
-      <p>Scoreboard</p>
-      <ul>
-        {orderedIds.map((id) => {
-          const ship = ships.entities[id]!;
-          const score = scores[id] ?? 0;
-          if (!ship.name) {
-            return null;
-          }
-          return (
-            <li key={ship.id}>
-              {ship.name}: {score}
-            </li>
-          );
-        })}
-      </ul>
+      <strong style={{ marginBottom: 12, display: "block" }}>Scoreboard</strong>
+      {orderedIds.map((id) => {
+        const ship = ships.entities[id]!;
+        const score = scores[id] ?? 0;
+        if (!ship.name) {
+          return null;
+        }
+        return (
+          <div key={ship.id}>
+            {ship.name}: {score}
+          </div>
+        );
+      })}
     </Dialog>
   );
 }
@@ -38,4 +36,5 @@ const Dialog = styled("div", {
   background: "rgba(0, 0, 0, 0.5)",
   color: "white",
   fontSize: 24,
+  borderRadius: 12,
 });
