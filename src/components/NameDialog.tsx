@@ -19,7 +19,7 @@ export function NameDialog() {
       style={{ backgroundColor: "rgba(255,255,255, 0.5)", color: "black" }}
     >
       <form onSubmit={registerShip}>
-        <span>Yarr, who are you?</span>
+        <span>Yarr! Who arr yee?</span>
         <br />
         <input
           value={inputName}
