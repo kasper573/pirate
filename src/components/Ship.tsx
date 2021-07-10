@@ -8,4 +8,12 @@ export const Ship = styled("div", {
   backgroundRepeat: "no-repeat",
   backgroundSize: "contain",
   backgroundPosition: "50% 50%",
+  variants: {
+    variant: {
+      me: {},
+      enemy: {
+        filter: "hue-rotate(308deg)",
+      },
+    },
+  },
 });

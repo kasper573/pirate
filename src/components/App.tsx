@@ -30,6 +30,7 @@ export function App() {
           return (
             <Ship
               key={`ship-${id}`}
+              variant={id === clientId ? "me" : "enemy"}
               style={createTransformStyle(ship.transform)}
             />
           );
