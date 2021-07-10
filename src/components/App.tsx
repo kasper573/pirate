@@ -10,6 +10,7 @@ import { Ship } from "./Ship";
 
 export function App() {
   const oceanRef = useRef<HTMLDivElement>(null);
+  const clientId = useSelector((state) => state.clientId);
   const ships = useSelector((state) => state.ships);
   const mouse = useMouse(oceanRef);
   const { width, height } = useResizeObserver({ ref: oceanRef });
@@ -22,7 +23,11 @@ export function App() {
       })}
       <Info>
         <pre>
-          {JSON.stringify({ mouse, viewport: { width, height } }, null, 2)}
+          {JSON.stringify(
+            { clientId, mouse, viewport: { width, height } },
+            null,
+            2
+          )}
         </pre>
       </Info>
     </Ocean>

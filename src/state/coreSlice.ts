@@ -12,6 +12,7 @@ const shipAdapter = createEntityAdapter<ShipDefinition>({
 });
 
 const initialState = {
+  clientId: "" as ShipId,
   ships: shipAdapter.getInitialState(),
 };
 
@@ -32,6 +33,9 @@ export const coreSlice = createSlice({
     },
     setState: (state, { payload }: PayloadAction<CoreState>) => {
       typedAssign(state, payload);
+    },
+    setClientId: (state, { payload }: PayloadAction<ShipId>) => {
+      state.clientId = payload;
     },
   },
 });
