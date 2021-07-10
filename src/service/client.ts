@@ -5,9 +5,13 @@ import { dispatchToSocket, receiveActionFromSocket } from "./socket";
 
 const serverUrl = () => `ws://${window.location.hostname}:${serverPort}`;
 
-export const createClient = (store: AppStore) => {
+export const createClient = (
+  store: AppStore,
+  onClose: WebSocket["onclose"]
+) => {
   const ws = new WebSocket(serverUrl());
   ws.onmessage = (e) => receiveActionFromSocket(e, store);
+  ws.onclose = onClose;
   return {
     dispatch: (action: AppAction) => {
       if (ws.readyState === 1) {
