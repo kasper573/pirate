@@ -36,6 +36,7 @@ wsServer.on("connection", (ws: WebSocket) => {
     sockets.delete(id);
     distributeDispatch(coreSlice.actions.removeShip(id));
   };
+  dispatchToSocket(ws, coreSlice.actions.setState(store.getState()));
   distributeDispatch(coreSlice.actions.addShip(createShip(id)));
 });
 
