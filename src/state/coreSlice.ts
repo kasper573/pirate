@@ -2,6 +2,7 @@ import {
   createEntityAdapter,
   createSlice,
   PayloadAction,
+  Update,
 } from "@reduxjs/toolkit";
 import { typedAssign } from "../functions/typedAssign";
 import { ShipDefinition, ShipId } from "./ShipDefinition";
@@ -22,6 +23,9 @@ export const coreSlice = createSlice({
   reducers: {
     addShip: (state, action: PayloadAction<ShipDefinition>) => {
       shipAdapter.addOne(state.ships, action);
+    },
+    updateShip: (state, action: PayloadAction<Update<ShipDefinition>>) => {
+      shipAdapter.updateOne(state.ships, action);
     },
     removeShip: (state, action: PayloadAction<ShipId>) => {
       shipAdapter.removeOne(state.ships, action);
