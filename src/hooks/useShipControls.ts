@@ -21,7 +21,6 @@ export function useShipControls() {
         slice.actions.fireProjectile({
           id: myShip.id,
           angleOffset: (direction * Math.PI) / 2,
-          startDistance: 50,
         })
       );
     }

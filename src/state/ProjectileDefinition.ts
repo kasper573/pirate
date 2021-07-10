@@ -6,5 +6,4 @@ export type ProjectileId = EntityId;
 export interface ProjectileDefinition {
   id: ProjectileId;
   transform: Transform;
-  initialTransform: Transform;
 }

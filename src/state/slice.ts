@@ -1,7 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { v4 } from "uuid";
 import { typedAssign } from "../functions/typedAssign";
-import { oceanSize, projectileSpeed, shipSpeed } from "../config";
+import {
+  oceanSize,
+  projectileSize,
+  projectileSpeed,
+  shipSize,
+  shipSpeed,
+} from "../config";
 import { keepShipsWithin } from "../functions/keepShipsWithin";
 import { expireProjectiles } from "../functions/expireProjectiles";
 import { translate } from "../functions/translate";
@@ -54,23 +60,23 @@ export const slice = createSlice({
     fireProjectile: (
       state,
       {
-        payload: { id, angleOffset, startDistance },
+        payload: { id, angleOffset },
       }: PayloadAction<{
         id: ShipId;
         angleOffset: number;
-        startDistance: number;
       }>
     ) => {
       const ship = state.ships.entities[id];
-      if (!ship) {
+      if (!ship || !ship.alive) {
         return;
       }
       const angle = ship.transform.angle + angleOffset;
-      const transform = translate({ ...ship.transform, angle }, startDistance);
       projectileAdapter.addOne(state.projectiles, {
         id: v4(),
-        transform,
-        initialTransform: transform,
+        transform: translate(
+          { ...ship.transform, ...projectileSize, angle },
+          shipSize.width / 2
+        ),
       });
     },
     nextFrame: ({ ships, projectiles }) => {

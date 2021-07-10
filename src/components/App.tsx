@@ -40,6 +40,7 @@ export function App() {
             <Ship
               key={`ship-${id}`}
               variant={id === clientId ? "me" : "enemy"}
+              state={ship.alive ? "alive" : "dead"}
               style={createTransformStyle(ship.transform)}
             />
           );

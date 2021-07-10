@@ -1,9 +1,9 @@
 import { styled } from "@stitches/react";
 import projectileImageUrl from "../assets/cannonball.png";
+import { projectileSize } from "../config";
 
 export const Projectile = styled("div", {
-  width: 30,
-  height: 30,
+  ...projectileSize,
   background: `url(${projectileImageUrl})`,
   backgroundRepeat: "no-repeat",
   backgroundSize: "contain",
