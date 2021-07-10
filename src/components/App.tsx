@@ -15,7 +15,7 @@ export function App() {
   const { width, height } = useResizeObserver({ ref: oceanRef });
   const ships = useSelector((state) => state.ships);
 
-  useShipControls(oceanRef);
+  const { direction } = useShipControls(oceanRef);
 
   return (
     <Ocean ref={oceanRef}>
@@ -24,7 +24,9 @@ export function App() {
         return <Ship key={id} style={createTransformStyle(ship.transform)} />;
       })}
       <Info>
-        <pre>{JSON.stringify({ viewport: { width, height } }, null, 2)}</pre>
+        <pre>
+          {JSON.stringify({ direction, viewport: { width, height } }, null, 2)}
+        </pre>
       </Info>
     </Ocean>
   );
