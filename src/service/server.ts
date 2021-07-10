@@ -52,11 +52,7 @@ function moveShips() {
       coreSlice.actions.updateShip({
         id,
         changes: {
-          transform: moveInDirection(
-            ship.transform,
-            ship.transform.rotation,
-            1
-          ),
+          transform: moveInDirection(ship.transform, ship.transform.angle, 1),
         },
       })
     );

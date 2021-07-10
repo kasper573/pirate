@@ -9,7 +9,11 @@ export const createClient = (store: AppStore) => {
   const ws = new WebSocket(serverUrl());
   ws.onmessage = (e) => receiveActionFromSocket(e, store);
   return {
-    dispatch: (action: AppAction) => dispatchToSocket(ws, action),
+    dispatch: (action: AppAction) => {
+      if (ws.readyState === 1) {
+        dispatchToSocket(ws, action);
+      }
+    },
   };
 };
 

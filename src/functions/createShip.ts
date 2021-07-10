@@ -6,7 +6,7 @@ export function createShip(id: ShipId): ShipDefinition {
     transform: {
       x: Math.random() * 1000,
       y: Math.random() * 1000,
-      rotation: Math.random() * 360,
+      angle: Math.random() * Math.PI * 2,
     },
   };
 }

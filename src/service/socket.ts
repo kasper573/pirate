@@ -11,5 +11,7 @@ export function receiveActionFromSocket(e: MessageEvent, store: AppStore) {
 }
 
 export function dispatchToSocket(ws: WebSocket, action: AppAction) {
-  return ws.send(JSON.stringify(action));
+  if (ws.readyState === 1) {
+    return ws.send(JSON.stringify(action));
+  }
 }
