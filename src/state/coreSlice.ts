@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { v4 } from "uuid";
 import { typedAssign } from "../functions/typedAssign";
-import { oceanSize } from "../config";
+import { oceanSize, projectileSpeed, shipSpeed } from "../config";
 import { keepShipsWithin } from "../functions/keepShipsWithin";
 import { expireProjectiles } from "../functions/expireProjectiles";
 import { translate } from "../functions/translate";
@@ -71,14 +71,14 @@ export const coreSlice = createSlice({
       // Move ships
       for (const id of ships.ids) {
         const ship = ships.entities[id]!;
-        ship.transform = translate(ship.transform, 3);
+        ship.transform = translate(ship.transform, shipSpeed);
       }
       keepShipsWithin(ships, oceanSize);
 
       // Move projectiles
       for (const id of projectiles.ids) {
         const p = projectiles.entities[id]!;
-        p.transform = translate(p.transform, 3);
+        p.transform = translate(p.transform, projectileSpeed);
       }
 
       expireProjectiles(projectiles, oceanSize);
