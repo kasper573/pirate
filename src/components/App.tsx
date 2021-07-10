@@ -11,7 +11,7 @@ export function App() {
     <Ocean>
       {ships.ids.map((id) => {
         const ship = ships.entities[id]!;
-        return <Ship key={id} style={createTransformStyle(ship.transform)} />
+        return <Ship key={id} style={createTransformStyle(ship.transform)} />;
       })}
     </Ocean>
   );

@@ -4,7 +4,7 @@ import express from "express";
 import { v4 } from "uuid";
 import { serverPort } from "../config";
 import { AppAction, createStore } from "../state/store";
-import { shipSlice } from "../state/shipSlice";
+import { coreSlice } from "../state/coreSlice";
 import { ShipId } from "../state/ShipDefinition";
 import { createShip } from "../functions/createShip";
 import { parseActionFromSocket, dispatchToSocket } from "./socket";
@@ -34,9 +34,9 @@ wsServer.on("connection", (ws: WebSocket) => {
     distributeDispatch(parseActionFromSocket(e), others(id));
   ws.onclose = () => {
     sockets.delete(id);
-    distributeDispatch(shipSlice.actions.remove(id));
+    distributeDispatch(coreSlice.actions.removeShip(id));
   };
-  distributeDispatch(shipSlice.actions.add(createShip(id)));
+  distributeDispatch(coreSlice.actions.addShip(createShip(id)));
 });
 
 httpServer.listen(serverPort, () =>

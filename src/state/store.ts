@@ -4,13 +4,12 @@ import {
   useDispatch as useReduxDispatch,
   useSelector as useReduxSelector,
 } from "react-redux";
+import { coreSlice } from "./coreSlice";
 
-import { rootReducer } from "./rootReducer";
-
-export const createStore = () => configureStore({ reducer: rootReducer });
+export const createStore = () => configureStore({ reducer: coreSlice.reducer });
 
 export type AppStore = ReturnType<typeof createStore>;
-export type RootState = ReturnType<typeof rootReducer>;
+export type RootState = ReturnType<typeof coreSlice.reducer>;
 export type AppDispatch = AppStore["dispatch"];
 export type AppAction = PayloadAction<unknown>;
 export const useDispatch = () => useReduxDispatch<AppDispatch>();
