@@ -13,6 +13,7 @@ import { expireProjectiles } from "../functions/expireProjectiles";
 import { translate } from "../functions/translate";
 import { hitTest } from "../functions/hitTest";
 import { createHitbox } from "../functions/createHitbox";
+import { createShip } from "../functions/createShip";
 import { ShipDefinition, ShipId } from "./ShipDefinition";
 import { shipAdapter } from "./shipAdapter";
 import { projectileAdapter } from "./projectileAdapter";
@@ -29,8 +30,8 @@ export const slice = createSlice({
   name: "core",
   initialState,
   reducers: {
-    addShip: (state, action: PayloadAction<ShipDefinition>) => {
-      shipAdapter.addOne(state.ships, action);
+    addShip: (state, { payload: id }: PayloadAction<ShipId>) => {
+      shipAdapter.addOne(state.ships, createShip(id));
     },
     angleShip: (
       state,
@@ -46,6 +47,10 @@ export const slice = createSlice({
       if (ship) {
         ship.alive = false;
       }
+    },
+    playAgain: ({ ships }, { payload: id }: PayloadAction<ShipId>) => {
+      shipAdapter.removeOne(ships, id);
+      shipAdapter.addOne(ships, createShip(id));
     },
     removeShip: (state, action: PayloadAction<ShipId>) => {
       shipAdapter.removeOne(state.ships, action);

@@ -34,7 +34,7 @@ wsServer.on("connection", (ws: WebSocket) => {
   };
   dispatchToSocket(ws, slice.actions.setState(store.getState()));
   dispatchToSocket(ws, slice.actions.setClientId(clientId));
-  distributeDispatch(slice.actions.addShip(createShip(clientId)));
+  distributeDispatch(slice.actions.addShip(clientId));
 });
 
 setInterval(() => {

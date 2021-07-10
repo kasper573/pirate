@@ -1,10 +1,16 @@
 import { styled } from "@stitches/react";
+import { useClientDispatch } from "../service/client";
+import { slice } from "../state/slice";
+import { useSelector } from "../state/store";
 
 export function DeathDialog() {
+  const dispatch = useClientDispatch();
+  const clientId = useSelector((state) => state.clientId);
+  const playAgain = () => dispatch(slice.actions.playAgain(clientId));
   return (
     <Dialog>
       <Message>You are dead</Message>
-      <Button onClick={() => window.location.reload()}>Play again</Button>
+      <Button onClick={playAgain}>Play again</Button>
     </Dialog>
   );
 }
