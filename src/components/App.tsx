@@ -7,7 +7,7 @@ import { useSelector } from "../state/store";
 import { useShipControls } from "../hooks/useShipControls";
 import { oceanSize } from "../config";
 import { createColorStyle } from "../functions/createColorStyle";
-import { useSoundEffects } from "../hooks/useSoundEffects";
+import { useAudio } from "../hooks/useAudio";
 import { Ocean } from "./Ocean";
 import { Ship } from "./Ship";
 import { ContentFit } from "./ContentFit";
@@ -23,14 +23,14 @@ export function App() {
   const { width = 1, height = 1 } = useWindowSize();
   const ships = useSelector((state) => state.ships);
   const myShip = useSelector((state) => state.ships.entities[state.clientId]);
-
+  const hasName = !!myShip?.name;
   const youAreDead = !myShip?.alive;
   const projectiles = useSelector((state) => state.projectiles);
 
   useShipControls();
-  useSoundEffects();
+  useAudio(hasName);
 
-  if (!myShip?.name) {
+  if (!hasName) {
     return <NameDialog />;
   }
 
@@ -40,7 +40,6 @@ export function App() {
       contentSize={oceanSize}
       onContextMenu={(e) => e.preventDefault()}
     >
-      {}
       <Ocean style={oceanSize} ref={oceanRef}>
         {ships.ids.map((id) => {
           const ship = ships.entities[id]!;
