@@ -10,6 +10,8 @@ import { Ocean } from "./Ocean";
 import { Ship } from "./Ship";
 import { ContentFit } from "./ContentFit";
 import { Projectile } from "./Projectile";
+import { DebugWindow } from "./DebugWindow";
+import { DeathDialog } from "./DeathDialog";
 
 export function App() {
   globalStyle();
@@ -18,6 +20,9 @@ export function App() {
   const { width = 1, height = 1 } = useWindowSize();
   const clientId = useSelector((state) => state.clientId);
   const ships = useSelector((state) => state.ships);
+  const youAreDead = useSelector(
+    (state) => !state.ships.entities[state.clientId]?.alive
+  );
   const projectiles = useSelector((state) => state.projectiles);
 
   const { direction } = useShipControls();
@@ -48,7 +53,8 @@ export function App() {
             />
           );
         })}
-        <Info>
+        {youAreDead && <DeathDialog />}
+        <DebugWindow>
           <pre>
             {JSON.stringify(
               {
@@ -62,7 +68,7 @@ export function App() {
               2
             )}
           </pre>
-        </Info>
+        </DebugWindow>
       </Ocean>
     </Viewport>
   );
@@ -70,13 +76,4 @@ export function App() {
 
 const Viewport = styled(ContentFit, {
   background: "black",
-});
-
-const Info = styled("div", {
-  position: "absolute",
-  top: 12,
-  left: 12,
-  background: "rgba(0, 0, 0, 0.5)",
-  color: "white",
-  padding: 12,
 });
