@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction} from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { v4 } from "uuid";
 import { typedAssign } from "../functions/typedAssign";
 import { oceanSize } from "../config";
