@@ -12,6 +12,7 @@ import { keepShipsWithin } from "../functions/keepShipsWithin";
 import { expireProjectiles } from "../functions/expireProjectiles";
 import { translate } from "../functions/translate";
 import { hitTest } from "../functions/hitTest";
+import { createHitbox } from "../functions/createHitbox";
 import { ShipDefinition, ShipId } from "./ShipDefinition";
 import { shipAdapter } from "./shipAdapter";
 import { projectileAdapter } from "./projectileAdapter";
@@ -86,11 +87,13 @@ export const slice = createSlice({
       const aliveShips = Object.values(ships.entities).filter(
         (ship): ship is ShipDefinition => !!ship?.alive
       );
+
       for (const ship of aliveShips) {
         ship.transform = translate(ship.transform, shipSpeed);
         const crashedInto = aliveShips.find(
           (other) =>
-            ship.id !== other.id && hitTest(ship.transform, other.transform)
+            ship.id !== other.id &&
+            hitTest(createHitbox(ship.transform), createHitbox(other.transform))
         );
         if (crashedInto) {
           ship.alive = false;
@@ -105,7 +108,8 @@ export const slice = createSlice({
         p.transform = translate(p.transform, projectileSpeed);
         const hitShip = aliveShips.find(
           (ship) =>
-            ship.id !== p.shooterId && hitTest(ship.transform, p.transform)
+            ship.id !== p.shooterId &&
+            hitTest(createHitbox(ship.transform), p.transform)
         );
         if (hitShip) {
           hitShip.alive = false;

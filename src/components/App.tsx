@@ -6,6 +6,7 @@ import { createTransformStyle } from "../functions/createTransformStyle";
 import { useSelector } from "../state/store";
 import { useShipControls } from "../hooks/useShipControls";
 import { oceanSize } from "../config";
+import { createColorStyle } from "../functions/createColorStyle";
 import { Ocean } from "./Ocean";
 import { Ship } from "./Ship";
 import { ContentFit } from "./ContentFit";
@@ -17,7 +18,6 @@ export function App() {
 
   const oceanRef = useRef<HTMLDivElement>(null);
   const { width = 1, height = 1 } = useWindowSize();
-  const clientId = useSelector((state) => state.clientId);
   const ships = useSelector((state) => state.ships);
   const youAreDead = useSelector(
     (state) => !state.ships.entities[state.clientId]?.alive
@@ -27,35 +27,39 @@ export function App() {
   useShipControls();
 
   return (
-    <Viewport
-      containerSize={{ width, height }}
-      contentSize={oceanSize}
-      onContextMenu={(e) => e.preventDefault()}
-    >
-      <Ocean style={oceanSize} ref={oceanRef}>
-        {ships.ids.map((id) => {
-          const ship = ships.entities[id]!;
-          return (
-            <Ship
-              key={`ship-${id}`}
-              variant={id === clientId ? "me" : "enemy"}
-              state={ship.alive ? "alive" : "dead"}
-              style={createTransformStyle(ship.transform)}
-            />
-          );
-        })}
-        {projectiles.ids.map((id) => {
-          const p = projectiles.entities[id]!;
-          return (
-            <Projectile
-              key={`projectile-${id}`}
-              style={createTransformStyle({ ...p.transform, angle: 0 })}
-            />
-          );
-        })}
-        {youAreDead && <DeathDialog />}
-      </Ocean>
-    </Viewport>
+    <>
+      <Viewport
+        containerSize={{ width, height }}
+        contentSize={oceanSize}
+        onContextMenu={(e) => e.preventDefault()}
+      >
+        <Ocean style={oceanSize} ref={oceanRef}>
+          {ships.ids.map((id) => {
+            const ship = ships.entities[id]!;
+            return (
+              <Ship
+                key={`ship-${id}`}
+                state={ship.alive ? "alive" : "dead"}
+                style={{
+                  ...createTransformStyle(ship.transform),
+                  ...createColorStyle(ship.id as string),
+                }}
+              />
+            );
+          })}
+          {projectiles.ids.map((id) => {
+            const p = projectiles.entities[id]!;
+            return (
+              <Projectile
+                key={`projectile-${id}`}
+                style={createTransformStyle({ ...p.transform, angle: 0 })}
+              />
+            );
+          })}
+          {youAreDead && <DeathDialog />}
+        </Ocean>
+      </Viewport>
+    </>
   );
 }
 

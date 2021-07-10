@@ -9,11 +9,6 @@ export function useShipControls() {
   const clientDispatch = useClientDispatch();
   const myShip = useSelector((state) => state.ships.entities[state.clientId]);
   const direction = useDirection();
-  useKeyPressEvent(" ", () => {
-    if (myShip) {
-      clientDispatch(slice.actions.killShip(myShip.id));
-    }
-  });
 
   useFireCannonEvent((direction) => {
     if (myShip) {

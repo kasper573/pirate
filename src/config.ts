@@ -13,3 +13,7 @@ export const projectileSize = {
 };
 export const shipSpeed = shipSize.height / 50;
 export const projectileSpeed = 5;
+export const hitBoxTolerance = {
+  x: 20,
+  y: 20,
+};
