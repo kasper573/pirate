@@ -37,14 +37,5 @@ export const coreSlice = createSlice({
     setClientId: (state, { payload }: PayloadAction<ShipId>) => {
       state.clientId = payload;
     },
-    setShipAngle: (
-      state,
-      { payload }: PayloadAction<{ id: ShipId; angle: number }>
-    ) => {
-      const ship = state.ships.entities[payload.id];
-      if (ship) {
-        ship.transform.angle = payload.angle;
-      }
-    },
   },
 });

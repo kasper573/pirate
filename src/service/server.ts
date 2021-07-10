@@ -7,7 +7,7 @@ import { AppAction, createStore } from "../state/store";
 import { coreSlice } from "../state/coreSlice";
 import { ShipId } from "../state/ShipDefinition";
 import { createShip } from "../functions/createShip";
-import { moveInDirection } from "../functions/moveInDirection";
+import { createMoveAction } from "../functions/createMoveAction";
 import { parseActionFromSocket, dispatchToSocket } from "./socket";
 
 const httpServer = http.createServer(express());
@@ -47,15 +47,7 @@ setInterval(moveShips, 10);
 function moveShips() {
   const { ships } = store.getState();
   for (const id of ships.ids) {
-    const ship = ships.entities[id]!;
-    distributeDispatch(
-      coreSlice.actions.updateShip({
-        id,
-        changes: {
-          transform: moveInDirection(ship.transform, ship.transform.angle, 1),
-        },
-      })
-    );
+    distributeDispatch(createMoveAction(ships.entities[id]!));
   }
 }
 
