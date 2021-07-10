@@ -1,4 +1,4 @@
-import { useKeyPress, useKeyPressEvent, useMouse } from "react-use";
+import { useKeyPress, useKeyPressEvent } from "react-use";
 import useAnimationFrame from "use-animation-frame";
 import { useEffect } from "react";
 import { useClientDispatch } from "../service/client";
@@ -9,6 +9,13 @@ export function useShipControls() {
   const clientDispatch = useClientDispatch();
   const myShip = useSelector((state) => state.ships.entities[state.clientId]);
   const direction = useDirection();
+  useKeyPressEvent(" ", () => {
+    if (myShip) {
+      clientDispatch(
+        coreSlice.actions.setShipAlive({ id: myShip.id, alive: !myShip.alive })
+      );
+    }
+  });
 
   useFireCannonEvent((direction) => {
     if (myShip) {

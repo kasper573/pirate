@@ -67,11 +67,22 @@ export const coreSlice = createSlice({
         initialTransform: transform,
       });
     },
+    setShipAlive: (
+      { ships },
+      { payload: { id, alive } }: PayloadAction<{ id: ShipId; alive: boolean }>
+    ) => {
+      const ship = ships.entities[id];
+      if (ship) {
+        ship.alive = alive;
+      }
+    },
     nextFrame: ({ ships, projectiles }) => {
       // Move ships
       for (const id of ships.ids) {
         const ship = ships.entities[id]!;
-        ship.transform = translate(ship.transform, shipSpeed);
+        if (ship.alive) {
+          ship.transform = translate(ship.transform, shipSpeed);
+        }
       }
       keepShipsWithin(ships, oceanSize);
 

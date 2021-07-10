@@ -5,5 +5,6 @@ export type ShipId = EntityId;
 
 export interface ShipDefinition {
   id: ShipId;
+  alive: boolean;
   transform: Transform;
 }
