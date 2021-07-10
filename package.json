@@ -58,6 +58,7 @@
     "react-use": "^17.2.4",
     "use-animation-frame": "^0.1.0",
     "use-resize-observer": "^7.0.0",
+    "use-sound": "^4.0.1",
     "uuidv4": "^6.2.11",
     "websocket": "^1.0.34"
   },
