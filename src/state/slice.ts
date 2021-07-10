@@ -17,7 +17,7 @@ const initialState = {
 
 type CoreState = typeof initialState;
 
-export const coreSlice = createSlice({
+export const slice = createSlice({
   name: "core",
   initialState,
   reducers: {

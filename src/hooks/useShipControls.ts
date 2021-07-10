@@ -3,7 +3,7 @@ import useAnimationFrame from "use-animation-frame";
 import { useEffect } from "react";
 import { useClientDispatch } from "../service/client";
 import { useSelector } from "../state/store";
-import { coreSlice } from "../state/coreSlice";
+import { slice } from "../state/slice";
 
 export function useShipControls() {
   const clientDispatch = useClientDispatch();
@@ -11,14 +11,14 @@ export function useShipControls() {
   const direction = useDirection();
   useKeyPressEvent(" ", () => {
     if (myShip) {
-      clientDispatch(coreSlice.actions.killShip(myShip.id));
+      clientDispatch(slice.actions.killShip(myShip.id));
     }
   });
 
   useFireCannonEvent((direction) => {
     if (myShip) {
       clientDispatch(
-        coreSlice.actions.fireProjectile({
+        slice.actions.fireProjectile({
           id: myShip.id,
           angleOffset: (direction * Math.PI) / 2,
           startDistance: 50,
@@ -34,7 +34,7 @@ export function useShipControls() {
       }
       const newAngle = myShip.transform.angle + direction * Math.PI * delta;
       clientDispatch(
-        coreSlice.actions.angleShip({
+        slice.actions.angleShip({
           id: myShip.id,
           angle: newAngle,
         })

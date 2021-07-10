@@ -4,7 +4,7 @@ import express from "express";
 import { v4 } from "uuid";
 import { serverPort } from "../config";
 import { AppAction, createStore } from "../state/store";
-import { coreSlice } from "../state/coreSlice";
+import { slice } from "../state/slice";
 import { ShipId } from "../state/ShipDefinition";
 import { createShip } from "../functions/createShip";
 import { parseActionFromSocket, dispatchToSocket } from "./socket";
@@ -30,16 +30,16 @@ wsServer.on("connection", (ws: WebSocket) => {
   ws.onmessage = (e) => distributeDispatch(parseActionFromSocket(e));
   ws.onclose = () => {
     sockets.delete(clientId);
-    distributeDispatch(coreSlice.actions.removeShip(clientId));
+    distributeDispatch(slice.actions.removeShip(clientId));
   };
-  dispatchToSocket(ws, coreSlice.actions.setState(store.getState()));
-  dispatchToSocket(ws, coreSlice.actions.setClientId(clientId));
-  distributeDispatch(coreSlice.actions.addShip(createShip(clientId)));
+  dispatchToSocket(ws, slice.actions.setState(store.getState()));
+  dispatchToSocket(ws, slice.actions.setClientId(clientId));
+  distributeDispatch(slice.actions.addShip(createShip(clientId)));
 });
 
 setInterval(() => {
-  store.dispatch(coreSlice.actions.nextFrame());
-  distributeDispatch(coreSlice.actions.setState(store.getState()));
+  store.dispatch(slice.actions.nextFrame());
+  distributeDispatch(slice.actions.setState(store.getState()));
 }, 1000 / 60);
 
 httpServer.listen(serverPort, () =>
