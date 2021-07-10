@@ -22,6 +22,7 @@ const initialState = {
   clientId: "" as ShipId,
   ships: shipAdapter.getInitialState(),
   projectiles: projectileAdapter.getInitialState(),
+  scores: {} as Record<ShipId, number>,
 };
 
 type CoreState = typeof initialState;
@@ -87,7 +88,7 @@ export const slice = createSlice({
         ),
       });
     },
-    nextFrame: ({ ships, projectiles }) => {
+    nextFrame: ({ ships, projectiles, scores }) => {
       // Move ships
       const aliveShips = Object.values(ships.entities).filter(
         (ship): ship is ShipDefinition => !!ship?.alive
@@ -119,6 +120,7 @@ export const slice = createSlice({
         if (hitShip) {
           hitShip.alive = false;
           projectileAdapter.removeOne(projectiles, id);
+          scores[p.shooterId] = (scores[p.shooterId] ?? 0) + 1;
         }
       }
 

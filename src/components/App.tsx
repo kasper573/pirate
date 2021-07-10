@@ -12,6 +12,7 @@ import { Ship } from "./Ship";
 import { ContentFit } from "./ContentFit";
 import { Projectile } from "./Projectile";
 import { DeathDialog } from "./DeathDialog";
+import { Scoreboard } from "./Scoreboard";
 
 export function App() {
   globalStyle();
@@ -58,6 +59,7 @@ export function App() {
           })}
           {youAreDead && <DeathDialog />}
         </Ocean>
+        <Scoreboard />
       </Viewport>
     </>
   );
