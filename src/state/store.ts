@@ -1,10 +1,17 @@
-import { configureStore } from "@reduxjs/toolkit"
-import { TypedUseSelectorHook, useDispatch as useReduxDispatch, useSelector as useReduxSelector } from "react-redux"
-import { core } from "./core";
+import { configureStore, PayloadAction } from "@reduxjs/toolkit";
+import {
+  TypedUseSelectorHook,
+  useDispatch as useReduxDispatch,
+  useSelector as useReduxSelector,
+} from "react-redux";
 
-export const createStore = () => configureStore({ reducer: core.reducer});
+import { rootReducer } from "./rootReducer";
+
+export const createStore = () => configureStore({ reducer: rootReducer });
+
 export type AppStore = ReturnType<typeof createStore>;
-export type RootState = ReturnType<AppStore["getState"]>
+export type RootState = ReturnType<typeof rootReducer>;
 export type AppDispatch = AppStore["dispatch"];
+export type AppAction = PayloadAction<unknown>;
 export const useDispatch = () => useReduxDispatch<AppDispatch>();
 export const useSelector: TypedUseSelectorHook<RootState> = useReduxSelector;

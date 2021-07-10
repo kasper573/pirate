@@ -1,12 +1,17 @@
-
 import { render } from "react-dom";
 import { Provider } from "react-redux";
 import { App } from "./components/App";
 import { createStore } from "./state/store";
-import { createClient } from "./service/client";
+import { ClientContext, createClient } from "./service/client";
 
 const store = createStore();
-const mountNode = document.getElementById("root");
-createClient(store);
+const client = createClient(store);
 
-render(<Provider store={store}><App /></Provider>, mountNode);
+render(
+  <ClientContext.Provider value={client}>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </ClientContext.Provider>,
+  document.getElementById("root")
+);
