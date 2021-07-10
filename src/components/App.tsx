@@ -15,7 +15,7 @@ export function App() {
   const { width, height } = useResizeObserver({ ref: oceanRef });
   const ships = useSelector((state) => state.ships);
 
-  const { direction } = useShipControls(oceanRef);
+  const { direction } = useShipControls();
 
   return (
     <Ocean ref={oceanRef}>

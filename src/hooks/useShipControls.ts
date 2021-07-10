@@ -1,11 +1,10 @@
-import { RefObject } from "react";
 import { useKeyPress } from "react-use";
 import useAnimationFrame from "use-animation-frame";
 import { useClientDispatch } from "../service/client";
 import { useSelector } from "../state/store";
 import { coreSlice } from "../state/coreSlice";
 
-export function useShipControls(oceanRef: RefObject<HTMLElement>) {
+export function useShipControls() {
   const clientDispatch = useClientDispatch();
   const myShip = useSelector((state) => state.ships.entities[state.clientId]);
   const direction = useDirection();
